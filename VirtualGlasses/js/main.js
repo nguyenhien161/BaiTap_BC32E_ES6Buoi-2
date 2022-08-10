@@ -11,32 +11,57 @@ let dataGlasses = [
     { id: "G9", src: "./img/g9.jpg", virtualImg: "./img/v9.png", brand: "Coarch", name: "MIDNIGHT VIXEN REMIX", color: "Blue, Black", price: 120, description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit consequatur soluta ad aut laborum amet." }
 ];
 
-const renderGlasses = (arr) => {
-    let value = '';
-    for (let i = 0; i < arr.length; i++) {
-        value += `
-            <div class="col-4">
-                <img class="vglasses__items" id="${arr[i].id}" onclick=wearGlasses('${arr[i].id}') src="${arr[i].src}">
-            </div>
-        `
+const renderGlasses = (array) => {
+    let html = "";
+    for (const value of array) {
+        html += `
+          <div class="col-4 vglasses__items">
+                  <img src="${value.src}" width="100%" alt="">
+          </div>
+          `;
     }
-    document.querySelector('#vglassesList').innerHTML = value;
+
+    document.querySelector("#vglassesList").innerHTML = html;
 };
+
 renderGlasses(dataGlasses);
-const wearGlasses = (itemID) => {
-    for (let i = 0; i < dataGlasses.length; i++) {
-        if (dataGlasses[i].id === itemID) {
-            document.querySelector('#avatar').innerHTML = `
-            <img src="${dataGlasses[i].virtualImg}" alt="">
-            <div class="col">
-            <span>${dataGlasses[i].name}</span><span>${dataGlasses[i].color}</span>
-            <br>
-            <a class="price">${dataGlasses[i].price}</a>
-            <span class="brand">${dataGlasses[i].brand}</span>
-            <p>${dataGlasses[i].description}</p>
-            </div>
+
+const wearGlasses = (array, srcClick) => {
+    let html = '';
+    for (const value of array) {
+        if (value.src === srcClick) {
+            html = `
+              <div class="test_glasses">
+                  <img src="${value.virtualImg}" alt="">
+              </div>
+              `
+        }
+    }
+    document.querySelector('.vglasses__model').innerHTML = html;
+}
+const renderContent = (array, idClick) => {
+    let html = '';
+    for (const value of array) {
+        if (value.id === idClick) {
+            html = `
+            <h1>${value.name} - ${value.brand} (${value.color})</h1>
+                            <div class="pay">
+                                <button>$${value.price}</button>
+                                <span>Stocking</span>
+                            </div>
+                            <p>${value.description}</p>
             `
         }
     }
+    document.querySelector('#glassesInfo').innerHTML = html;
+}
 
+const mangButton = document.querySelectorAll('.vglasses__items');
+
+for (let i = 0; i < dataGlasses.length; i++) {
+    mangButton[i].onclick = () => {
+        wearGlasses(dataGlasses, dataGlasses[i].src);
+        renderContent(dataGlasses, dataGlasses[i].id);
+        document.querySelector('.vglasses__info').style.display = 'block';
+    }
 }
